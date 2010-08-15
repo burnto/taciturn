@@ -1,5 +1,52 @@
 var sys = require("sys"),
-    ws = require("./ws");
+    ws = require("./ws"),
+    http = require('http'),
+    url = require("url"),
+    path = require("path"),
+    fs = require("fs");
+
+/*
+
+http.createServer(function(request, response) {
+  var uri = url.parse(request.url).pathname;
+  var filename = path.join(process.cwd(), uri);
+
+  path.exists(filename, function(exists) {
+    if(!exists) {
+      response.sendHeader(404, {"Content-Type": "text/plain"});
+      response.write("404 Not Found");
+      response.close();
+      return;
+    }
+
+    fs.readFile(filename, "binary", function(err, file) {
+      if(err) {
+        response.sendHeader(500, {"Content-Type": "text/plain"});
+        response.write(err + "n");
+        response.close();
+        return;
+      }
+
+      response.sendHeader(200);
+      response.write(file, "binary");
+      response.close();
+    });
+  });
+}).listen(8124);
+
+*/
+
+
+var app = require('express').createServer();
+
+app.get('/', function(req, res){
+    res.send('hello world');
+});
+
+app.listen(3000);
+
+
+
 
 ws.createServer(function (websocket) {
   websocket.addListener("connect", function (resource) { 
@@ -21,4 +68,5 @@ ws.createServer(function (websocket) {
   });
 }).listen(8125);
 
-sys.puts('running bitchez');
+
+sys.puts('sshhh');
