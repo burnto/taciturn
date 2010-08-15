@@ -40,8 +40,19 @@ http.createServer(function(request, response) {
 var app = require('express').createServer();
 
 app.get('/', function(req, res){
-    res.send('hello world');
+    res.sendfile('../client/index.html');
 });
+app.get('/client.js', function(req, res){
+    res.sendfile('../client/client.js');
+});
+app.get('/client.css', function(req, res){
+    res.sendfile('../client/client.css');
+});
+app.get('/jquery.ndd.js', function(req, res){
+    res.sendfile('../client/jquery.ndd.js');
+});
+
+
 
 app.listen(3000);
 
