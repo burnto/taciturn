@@ -12,7 +12,7 @@ app.get('/', function(req, res){
   res.sendfile('../client/index.html');
 });
 app.get('/*', function(req, res){
-  sys.puts(req.params[0]);
+  // sys.puts(req.params[0]);
   res.sendfile('../client/' + req.params[0]);
 });
 
@@ -30,13 +30,12 @@ ws.createServer(function (websocket) {
       websocket.write("hi" + (x += 1));
     }, 1000)
       // setTimeout(websocket.end, 10 * 1000); 
-    }).addListener("data", function (data) { 
+  }).addListener("data", function (data) { 
 
     // handle incoming data
     sys.debug(data);
+    websocket.write("DATA:" + data);
 
-    // send data to client
-    websocket.write("Thanks!");
   }).addListener("close", function () { 
     // emitted when server or client closes connection
     sys.debug("close");
