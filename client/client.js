@@ -35,8 +35,8 @@ var taciturn = function() {
       }
     },
 
-    send: function() {
-      ws.send('oh hai');
+    send: function(data) {
+      ws.send(data);
     },
     
     close: function() {
@@ -48,9 +48,11 @@ var taciturn = function() {
 
 
 $(function() {
+  
   taciturn.init(function(evt) {
     console.log(evt);
-    $(".messages").html(evt.data);
+    $("img").attr("src", evt.data)
+    // $(".messages").html(evt.data);
   })
   taciturn.connect();
   
@@ -70,7 +72,19 @@ $(function() {
         // Drop!
         function(e) {
           $(this).removeClass('dragover')
-          taciturn.send(e.dataTransfer.files[0].fileName);
+
+          var reader = new FileReader();
+          reader.onload = function(e) { 
+            // console.log(e.target.result);
+            taciturn.send(e.target.result);
+          }
+          reader.readAsDataURL(e.dataTransfer.files[0]);
+          
+          
+          // console.log(e.dataTransfer.files[0].getData("image/png"));
+          // debugger;
+          
+          // taciturn.send(e.dataTransfer.files[0].fileName);
           // $('ul', this).append('<li>' + e.dataTransfer.files[0].fileName + '</li>')
         }
     )
