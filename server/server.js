@@ -5,41 +5,43 @@ var sys = require("sys"),
     path = require("path"),
     fs = require("fs");
 
-var app = require('express').createServer();
+//
+// http
+//
 
+var app = require('express').createServer();
 
 app.get('/', function(req, res){
   res.sendfile('../client/index.html');
 });
 app.get('/*', function(req, res){
-  // sys.puts(req.params[0]);
   res.sendfile('../client/' + req.params[0]);
 });
 
 app.listen(3000);
 
-var x = 0;
+//
+// websocket
+//
 
 var connections = [];
 
 ws.createServer(function (websocket) {
+  var connectionIndex;
 
   websocket.addListener("connect", function (resource) { 
 
+    connectionIndex = connections.length;
     connections.push(websocket);
 
     // emitted after handshake
-    sys.debug("connect: " + resource);
+    sys.debug("connect " + connectionIndex);
 
     // server closes connection after 10s, will also get "close" event
-    // setInterval(function() {
-    //   websocket.write("hi" + (x += 1));
-    // }, 1000)
-      // setTimeout(websocket.end, 10 * 1000); 
+    // setTimeout(websocket.end, 10 * 1000); 
   }).addListener("data", function (data) { 
 
     // handle incoming data
-    sys.debug(data);
     for(var i = 0; i < connections.length; i++) {
       connections[i].write(data);
     }
@@ -47,9 +49,8 @@ ws.createServer(function (websocket) {
   }).addListener("close", function () { 
     // emitted when server or client closes connection
 
-    // TODO remove websocket from connnectiosn array
-
-    sys.debug("close");
+    connections.splice(connectionIndex, 1);
+    sys.debug("closed " + connectionIndex + ".  " + connections.length + " still connected.");
   });
 }).listen(8125);
 
