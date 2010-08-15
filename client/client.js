@@ -42,14 +42,39 @@ $(function() {
     cancel(evt);
   })
   drop.bind('dragend', function(evt) {
-    console.log('leave');
     cancel(evt);
   })
-  drop.bind('drop', function(evt) {
-    this.innerHTML += '<p>' + evt.dataTransfer.getData('Text') + '</p>';
-    cancel(evt);
-  })
+  drop.droppable('Files',
 
+        // Drag enter
+        function(e) {
+            $(this).addClass('dragover')
+        },
+
+        // Drag leave
+        function() {
+            $(this).removeClass('dragover')
+        },
+
+        // Drop!
+        function(e) {
+          $(this).removeClass('dragover')
+          $('ul', this).append('<li>' + e.dataTransfer.files[0].fileName + '</li>')
+        }
+    )
+  // 
+  // drop.bind('drop', function(evt) {
+  //   var files = evt.dataTransfer.files;
+  //   console.log(evt)
+  //   if(!files) {
+  //     for(var f in files) {
+  //       this.innerHTML += f.fileName;
+  //     }
+  //   }
+  //   // this.innerHTML += '<p>' + evt.dataTransfer.getData('Text') + '</p>';
+  //   cancel(evt);
+  // })
+  // 
   // 
   // addEvent(drop, 'dragover', cancel);
   // addEvent(drop, 'dragenter', cancel);
