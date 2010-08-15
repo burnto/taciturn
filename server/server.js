@@ -20,8 +20,14 @@ app.listen(3000);
 
 var x = 0;
 
+var connections = [];
+
 ws.createServer(function (websocket) {
+
   websocket.addListener("connect", function (resource) { 
+
+    connections.push(websocket);
+
     // emitted after handshake
     sys.debug("connect: " + resource);
 
@@ -34,10 +40,15 @@ ws.createServer(function (websocket) {
 
     // handle incoming data
     sys.debug(data);
-    websocket.write("DATA:" + data);
+    for(var i = 0; i < connections.length; i++) {
+      connections[i].write(data);
+    }
 
   }).addListener("close", function () { 
     // emitted when server or client closes connection
+
+    // TODO remove websocket from connnectiosn array
+
     sys.debug("close");
   });
 }).listen(8125);
