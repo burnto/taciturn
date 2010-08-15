@@ -5,10 +5,8 @@ var sys = require("sys"),
     path = require("path"),
     fs = require("fs");
 
-
-/* http */
-
 var app = require('express').createServer();
+
 
 app.get('/', function(req, res){
   res.sendfile('../client/index.html');
@@ -20,9 +18,7 @@ app.get('/*', function(req, res){
 
 app.listen(3000);
 
-
-
-/* websocket */
+var x = 0;
 
 ws.createServer(function (websocket) {
   websocket.addListener("connect", function (resource) { 
@@ -30,7 +26,10 @@ ws.createServer(function (websocket) {
     sys.debug("connect: " + resource);
 
     // server closes connection after 10s, will also get "close" event
-      setTimeout(websocket.end, 10 * 1000); 
+    setInterval(function() {
+      websocket.write("hi" + (x += 1));
+    }, 1000)
+      // setTimeout(websocket.end, 10 * 1000); 
     }).addListener("data", function (data) { 
 
     // handle incoming data

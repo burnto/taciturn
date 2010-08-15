@@ -16,7 +16,7 @@ var taciturn = function() {
 
         ws.onmessage = function(evt) {
           rcvHandler(evt);
-          console.log('onmessage' + evt);
+          console.log(evt);
         };
 
         ws.onopen = function(evt) {
@@ -50,8 +50,9 @@ var taciturn = function() {
 $(function() {
   taciturn.init(function(evt) {
     console.log(evt);
-    $(".messages").html(evt);
+    $(".messages").html(evt.data);
   })
+  taciturn.connect();
   
   // Set up drop
   $(".drop").droppable('Files',
