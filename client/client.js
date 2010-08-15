@@ -20,7 +20,6 @@ var taciturn = function() {
         };
 
         ws.onopen = function(evt) {
-          //ws.send('oh hai');
         };
 
         ws.onclose = function(evt) {
@@ -50,42 +49,50 @@ var taciturn = function() {
 $(function() {
   
   taciturn.init(function(evt) {
-    console.log(evt);
-    $("img").attr("src", evt.data)
+    var oldData = $(".frame img:first").attr('src');
+    $(".frame img:first")
+      .attr("src", evt.data)
+      .removeClass("start")
     // $(".messages").html(evt.data);
+    $(".log")
+      .prepend(
+        $("<div></div>")
+          .addClass("loggedImage")
+          .append($("<img/>").attr("src", oldData)));
+    
   })
   taciturn.connect();
   
+  $(window).resize(function() {
+    var img = $(".frame img")
+    var frameExtra = img.outerHeight() - img.innerHeight();
+    $(".frame img")
+      .css({maxHeight: $(this).height() - $("header").outerHeight() - frameExtra - 40})
+  }).resize();
+  
   // Set up drop
-  $(".drop").droppable('Files',
+  $("body").droppable('Files',
 
-        // Drag enter
-        function(e) {
-            $(this).addClass('dragover')
-        },
+    // Drag enter
+    function(e) {
+      $(".frame").addClass('dragover')
+    },
 
-        // Drag leave
-        function() {
-            $(this).removeClass('dragover')
-        },
+    // Drag leave
+    function() {
+      $(".frame").removeClass('dragover')
+    },
 
-        // Drop!
-        function(e) {
-          $(this).removeClass('dragover')
+    // Drop!
+    function(e) {
+      $(".frame").removeClass('dragover')
 
-          var reader = new FileReader();
-          reader.onload = function(e) { 
-            // console.log(e.target.result);
-            taciturn.send(e.target.result);
-          }
-          reader.readAsDataURL(e.dataTransfer.files[0]);
-          
-          
-          // console.log(e.dataTransfer.files[0].getData("image/png"));
-          // debugger;
-          
-          // taciturn.send(e.dataTransfer.files[0].fileName);
-          // $('ul', this).append('<li>' + e.dataTransfer.files[0].fileName + '</li>')
+      var reader = new FileReader();
+      reader.onload = function(e) { 
+        // console.log(e.target.result);
+        taciturn.send(e.target.result);
+      }
+      reader.readAsDataURL(e.dataTransfer.files[0]);
         }
     )
 
