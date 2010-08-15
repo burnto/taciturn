@@ -12,7 +12,7 @@ var taciturn = function() {
     
     connect: function() {
       if(("WebSocket" in window)) {
-        ws = new WebSocket("ws://localhost:8125");
+        ws = new WebSocket("ws://burnto.local:8125");
 
         ws.onmessage = function(evt) {
           rcvHandler(evt);
@@ -70,7 +70,8 @@ $(function() {
         // Drop!
         function(e) {
           $(this).removeClass('dragover')
-          $('ul', this).append('<li>' + e.dataTransfer.files[0].fileName + '</li>')
+          taciturn.send(e.dataTransfer.files[0].fileName);
+          // $('ul', this).append('<li>' + e.dataTransfer.files[0].fileName + '</li>')
         }
     )
 
