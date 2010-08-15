@@ -20,7 +20,7 @@ var taciturn = function() {
         };
 
         ws.onopen = function(evt) {
-          ws.send('oh hai');
+          //ws.send('oh hai');
         };
 
         ws.onclose = function(evt) {
