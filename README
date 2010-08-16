@@ -1,1 +1,3 @@
 SSSSSHHHHHHH!
+
+Taciturn is chat, but with images. Drag an image from your desktop into your native drag/drop/file/filereader API supporting browser (e.g. Chrome 6+), and it'll send the image data over a WebSocket, which our server then redistributes to all connected clients.
